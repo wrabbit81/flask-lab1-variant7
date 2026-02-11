@@ -1,0 +1,38 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}Результат обработки{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Результат обработки</h1>
+    <p class="text-center">Выбранный порядок каналов: <strong>{{ order }}</strong></p>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <h4>Исходное изображение</h4>
+        </div>
+        <div class="col-md-6">
+            <h4>Обработанное изображение</h4>
+            <img src="{{ url_for('uploaded_file', filename=processed) }}" class="img-fluid img-thumbnail">
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <h4>Распределение цветов (исходное изображение)</h4>
+            <img src="data:image/png;base64,{{ histogram }}" class="img-fluid">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <h4>Средние значения цвета по вертикали и горизонтали</h4>
+            <img src="data:image/png;base64,{{ mean_plots }}" class="img-fluid">
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="{{ url_for('index') }}" class="btn btn-primary">Обработать другое изображение</a>
+    </div>
+</div>
+{% endblock %}

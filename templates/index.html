@@ -1,0 +1,28 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Color Channel Changer{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Изменение порядка цветовых каналов</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    {{ wtf.quick_form(form, enctype="multipart/form-data", button_map={'submit': 'primary'}) }}
+                </div>
+            </div>
+            <div class="mt-4">
+                <h5>Инструкция:</h5>
+                <ol>
+                    <li>Выберите изображение (JPG или PNG)</li>
+                    <li>Выберите порядок цветовых каналов</li>
+                    <li>Нажмите "Обработать"</li>
+                </ol>
+                <p class="text-muted">Поддерживаемые форматы: JPG, JPEG, PNG. Максимальный размер: 5 МБ.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
