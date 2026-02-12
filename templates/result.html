@@ -1,38 +1,93 @@
-{% extends "bootstrap/base.html" %}
+{% extends "base.html" %}
 
-{% block title %}Результат обработки{% endblock %}
+{% block title %}Результаты обработки{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <h1 class="text-center mb-4">Результат обработки</h1>
-    <p class="text-center">Выбранный порядок каналов: <strong>{{ order }}</strong></p>
-
-    <div class="row mb-4">
-        <div class="col-md-6">
-            <h4>Исходное изображение</h4>
-        </div>
-        <div class="col-md-6">
-            <h4>Обработанное изображение</h4>
-            <img src="{{ url_for('uploaded_file', filename=processed) }}" class="img-fluid img-thumbnail">
+<div class="row">
+    <div class="col-12">
+        <div class="alert alert-success">
+            <h5>✅ Изображение успешно обработано!</h5>
+            <p>Выбранный порядок каналов: <strong>{{ channel_order }}</strong></p>
         </div>
     </div>
+</div>
 
-    <div class="row mb-4">
-        <div class="col-12">
-            <h4>Распределение цветов (исходное изображение)</h4>
-            <img src="data:image/png;base64,{{ histogram }}" class="img-fluid">
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Исходное изображение</h5>
+            </div>
+            <div class="card-body text-center">
+                <img src="{{ url_for('static', filename='uploads/' + original_image) }}"
+                     class="img-fluid img-thumbnail" alt="Original">
+            </div>
         </div>
     </div>
-
-    <div class="row">
-        <div class="col-12">
-            <h4>Средние значения цвета по вертикали и горизонтали</h4>
-            <img src="data:image/png;base64,{{ mean_plots }}" class="img-fluid">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Обработанное изображение ({{ channel_order }})</h5>
+            </div>
+            <div class="card-body text-center">
+                <img src="{{ url_for('static', filename='uploads/' + processed_image) }}"
+                     class="img-fluid img-thumbnail" alt="Processed">
+            </div>
         </div>
     </div>
+</div>
 
-    <div class="text-center mt-4">
-        <a href="{{ url_for('index') }}" class="btn btn-primary">Обработать другое изображение</a>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Гистограмма RGB - исходное</h5>
+            </div>
+            <div class="card-body text-center">
+                <img src="data:image/png;base64,{{ hist_original }}" class="img-fluid" alt="Histogram Original">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Гистограмма RGB - {{ channel_order }}</h5>
+            </div>
+            <div class="card-body text-center">
+                <img src="data:image/png;base64,{{ hist_processed }}" class="img-fluid" alt="Histogram Processed">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Среднее по вертикали (по строкам)</h5>
+            </div>
+            <div class="card-body text-center">
+                <img src="data:image/png;base64,{{ row_plot }}" class="img-fluid" alt="Mean by Row">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Среднее по горизонтали (по столбцам)</h5>
+            </div>
+            <div class="card-body text-center">
+                <img src="data:image/png;base64,{{ col_plot }}" class="img-fluid" alt="Mean by Column">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col-12 text-center">
+        <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg">
+            ← Обработать другое изображение
+        </a>
     </div>
 </div>
 {% endblock %}

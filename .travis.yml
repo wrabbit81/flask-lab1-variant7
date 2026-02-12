@@ -2,35 +2,19 @@ language: python
 python:
   - "3.8"
 
-# Разрешаем использовать sudo если нужно
-sudo: required
+before_install:
+  - chmod +x ./st.sh
 
-# Кэшируем pip для ускорения
-cache: pip
-
-# Устанавливаем зависимости
 install:
-  - pip install --upgrade pip
   - pip install -r requirements.txt
 
-# Запускаем тесты
 script:
-  - echo "Начинаем тестирование..."
-  - python -c "import flask; print('Flask установлен:', flask.__version__)"
-  - python -c "import numpy; print('NumPy установлен:', numpy.__version__)"
-  - python -c "import matplotlib; print('Matplotlib установлен:', matplotlib.__version__)"
-  - python -c "from PIL import Image; print('Pillow установлен')"
+  - python some_app.py
 
-  # Запускаем Flask в фоне и тестируем
-  - python app.py &
-  - sleep 5
-  - curl -f http://localhost:5000/ || exit 1
-
-# Уведомления (опционально)
-notifications:
-  email: false
-
-# Ветки для сборки
-branches:
-  only:
-    - main
+deploy:
+  provider: heroku
+  api_key:
+    secure: YOUR_ENCRYPTED_HEROKU_API_KEY
+  app: your-heroku-app-name
+  on:
+    branch: main

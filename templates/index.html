@@ -1,27 +1,76 @@
-{% extends "bootstrap/base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
 
-{% block title %}Color Channel Changer{% endblock %}
+{% block title %}Загрузка изображения{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <h1 class="text-center mb-4">Изменение порядка цветовых каналов</h1>
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    {{ wtf.quick_form(form, enctype="multipart/form-data", button_map={'submit': 'primary'}) }}
-                </div>
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Загрузка изображения для обработки</h4>
             </div>
-            <div class="mt-4">
-                <h5>Инструкция:</h5>
-                <ol>
-                    <li>Выберите изображение (JPG или PNG)</li>
-                    <li>Выберите порядок цветовых каналов</li>
-                    <li>Нажмите "Обработать"</li>
-                </ol>
-                <p class="text-muted">Поддерживаемые форматы: JPG, JPEG, PNG. Максимальный размер: 5 МБ.</p>
+            <div class="card-body">
+                <!-- Ручное создание формы вместо wtf.quick_form -->
+                <form method="post" enctype="multipart/form-data">
+                    {{ form.hidden_tag() }}
+
+                    <!-- Поле загрузки файла -->
+                    <div class="mb-3">
+                        {{ form.upload.label(class="form-label") }}
+                        {{ form.upload(class="form-control") }}
+                        {% if form.upload.errors %}
+                            <div class="text-danger">
+                                {% for error in form.upload.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Выбор порядка каналов -->
+                    <div class="mb-3">
+                        {{ form.channel_order.label(class="form-label") }}
+                        {{ form.channel_order(class="form-select") }}
+                        {% if form.channel_order.errors %}
+                            <div class="text-danger">
+                                {% for error in form.channel_order.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Капча -->
+                    <div class="mb-3">
+                        {{ form.recaptcha.label }}
+                        {{ form.recaptcha() }}
+                        {% if form.recaptcha.errors %}
+                            <div class="text-danger">
+                                {% for error in form.recaptcha.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Кнопка отправки -->
+                    <button type="submit" class="btn btn-primary">{{ form.submit.label.text }}</button>
+                </form>
             </div>
+            <div class="card-footer text-muted">
+                <small>Поддерживаемые форматы: JPG, PNG, JPEG</small>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <h5>Описание работы (Вариант 7):</h5>
+            <p>Веб-приложение изменяет порядок цветовых каналов RGB в соответствии с выбором пользователя.</p>
+            <ul>
+                <li>📊 Вывод гистограмм распределения цветов исходного и обработанного изображения</li>
+                <li>📈 График среднего значения цвета по вертикали (по строкам)</li>
+                <li>📉 График среднего значения цвета по горизонтали (по столбцам)</li>
+                <li>🔒 Защита от роботов с помощью reCAPTCHA</li>
+            </ul>
         </div>
     </div>
 </div>
