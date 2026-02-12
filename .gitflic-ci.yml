@@ -13,4 +13,3 @@ test:
     - python some_app.py
   only:
     - main
-    - master
